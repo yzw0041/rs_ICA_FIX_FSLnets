@@ -1,0 +1,17 @@
+
+
+Melview is a tool for viewing and classifying ICA components from FSL. It's expected to be replaced later in 2016 by "FSLeyes", but until that happens it's still pretty useful. Here are a few tips for installing it in OSX.
+
+First, follow the instructions on the FSL melview page: http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Melview. The try to run it by typing "melview" in the terminal. If this gives you the error “no module named pygments.lexer”, you need to install pygments using macports:
+
+sudo port install py27-pygments
+
+Try running melview again. You may get the error: "ImportError: cannot import name NavigationToolbar2QTAgg". If so, you need to edit the file melodic_traits.py, which is probably in /opt/local/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/melview. Change line 121 from:
+
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QTAgg as _NavigationToolbar
+
+to:
+
+from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT as _NavigationToolbar
+
+After that, it should work.

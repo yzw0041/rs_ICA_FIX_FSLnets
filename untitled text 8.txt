@@ -1,0 +1,24 @@
+#Fix  
+
+cd /Users/posnerlab/Documents/Hellerstein/Resting_FSL/Data_TP1/Placebo/3171_8120/fMRI/s10_resting
+
+/Users/posnerlab/Documents/Tools/FSL_Tool/fix/fix     s13_resting.ica   /Users/posnerlab/Documents/Tools/FSL_Tool/fix/training_files/Standard.RData  20
+
+# Create a new trained-weights file
+
+ro="/Users/posnerlab/Documents/Hellerstein/Resting_FSL/Data_TP1/Treatment";
+
+/Users/posnerlab/Documents/Tools/FSL_Tool/fix/fix     -t  Mytraining    [-l]     ${ro}/4429_8149/fMRI/s13_resting/s13_resting.ica      ${ro}/4429_8149/fMRI/s14_resting/s14_resting.ica    ${ro}/4517_8151/fMRI/s11_resting/s11_resting.ica    ${ro}/4517_8151/fMRI/s12_resting/s12_resting.ica   ${ro}/4676_8154/fMRI/s11_resting/s11_resting.ica   ${ro}/4676_8154/fMRI/s12_resting/s12_resting.ica  ${ro}/4924_8157/fMRI/s12_resting/s12_resting.ica  ${ro}/4924_8157/fMRI/s13_resting/s13_resting.ica     ${ro}/5072_8165/fMRI/s6_resting/s6_resting.ica   ${ro}/5072_8165/fMRI/s7_resting/s7_resting.ica ${ro}/4037_8139/fMRI/s12_resting/s12_resting.ica    ${ro}/4037_8139/fMRI/s11_resting/s11_resting.ica   ${ro}/4186_8144/fMRI/s11_resting/s11_resting.ica   ${ro}/4186_8144/fMRI/s12_resting/s12_resting.ica  ${ro}/5653_8166/fMRI/s12_resting/s12_resting.ica  ${ro}/5653_8166/fMRI/s13_resting/s13_resting.ica  ${ro}/5850_8169/fMRI/s12_resting/s12_resting.ica    ${ro}/5850_8169/fMRI/s11_resting/s11_resting.ica  ${ro}/5968_8170/fMRI/s12_resting/s12_resting.ica  ${ro}/5968_8170/fMRI/s13_resting/s13_resting.ica
+/Users/posnerlab/Documents/Tools/FSL_Tool/fix/fix      -c   ${ro}/5653_8166/fMRI/s13_resting/s13_resting.ica  Mytraining.RData  20
+
+
+tail -n 1 ~/fsl_course_data/rest/ICA/Group/002/REST.ica/fix4melview_training_thr30.txt 
+
+melodic -i sublist_func_ica.txt -o groupmelodic_fix_30.ica -v --nobet --bgthreshold=10 --tr=2.200 --report -d 30 --mmthresh=0.5 --Ostats -a concat
+dual_regression groupmelodic_fix_100.ica/melodic_IC 1 groupmelodic_fix_100.ica/design.mat groupmelodic_fix_100.ica/design.con 5000  groupmelodic_fix_100.ica/TS `cat sublist_dual.txt`
+
+slices_summary /Users/posnerlab/Documents/Hellerstein/Resting_FSL/groupmelodic_fix.ica/melodic_IC.nii.gz 4 /Users/posnerlab/Documents/Hellerstein/Resting_FSL/groupmelodic_fix.ica/mean.nii.gz  /Users/posnerlab/Documents/Hellerstein/Resting_FSL/groupmelodic_fix.ica/melodic_IC.sum
+
+Text2Vest design.txt design.mat
+
+setenv('FSLOUTPUTTYPE','NIFTI_GZ')
